@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { Download, Pause, Play, RefreshCw, Trash2, X, HardDrive, ShieldCheck } from 'lucide-react';
+import { Download, Pause, Play, RefreshCw, Trash2, X, HardDrive } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CHAPTER_LIST, READERS } from '@/lib/quran';
 import { auditDownloads, controlDownloads, deleteRecitations, deleteRecording, enqueueRecitations, useOfflineAudio } from '@/lib/offline-audio';
@@ -28,7 +28,6 @@ function DownloadsPage() {
   const [to, setTo] = useState('');
   const single = selection.length === 1 ? CHAPTER_LIST.find(c => c.id === selection[0]) : undefined;
   const [error, setError] = useState('');
-  const [checking, setChecking] = useState(false);
   const run = (task: Promise<unknown>) => { setError(''); void task.catch(e => setError(e instanceof Error ? e.message : 'Please retry.')); };
   useEffect(() => { run(auditDownloads()); }, []);
   const visible = records.filter(r => (reciterFilter === 'all' || r.reader === reciterFilter) && (status === 'all' || (status === 'queue' ? ['queued', 'downloading', 'paused'].includes(r.status) : r.status === status)) && `${r.chapter} ${CHAPTER_LIST.find(c => c.id === r.chapter)?.transliterationName ?? ''} ${r.verse}`.toLowerCase().includes(query.toLowerCase())).sort((a, b) => a.chapter - b.chapter || a.verse - b.verse);
@@ -74,10 +73,6 @@ function DownloadsPage() {
         <select aria-label="Filter status" value={status} onChange={e => setStatus(e.target.value)} className={filterClasses}>{[['all', 'All statuses'], ['downloaded', 'Downloaded'], ['queue', 'Queue & paused'], ['error', 'Needs attention'], ['cancelled', 'Cancelled']].map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select>
       </div>
       <div className="mb-4 flex flex-wrap gap-2">
-        <Button variant="outline" size="sm" onClick={() => run(controlDownloads('pause'))}><Pause size={16} />Pause all</Button>
-        <Button variant="outline" size="sm" disabled={!online} onClick={() => run(controlDownloads('resume'))}><Play size={16} />Resume all</Button>
-        <Button variant="outline" size="sm" disabled={!online} onClick={() => run(controlDownloads('retry'))}><RefreshCw size={16} />Retry errors</Button>
-        <Button variant="ghost" size="sm" disabled={checking} onClick={() => { setChecking(true); run(auditDownloads().finally(() => setChecking(false))); }}><ShieldCheck size={16} />{checking ? 'Checking…' : 'Check files'}</Button>
         {reciterFilter !== 'all' && <Button variant="ghost" size="sm" onClick={() => { if (window.confirm('Delete all recordings and queued downloads for this reciter?')) run(deleteRecitations(reciterFilter)); }}><Trash2 size={16} />Delete reciter</Button>}
       </div>
       </>}
