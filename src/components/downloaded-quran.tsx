@@ -18,7 +18,7 @@ export function DownloadedQuran() {
         <Link to="/downloads" className="flex min-h-11 items-center gap-1 text-sm text-primary">See all <ChevronRight size={16} /></Link>
       </div>
       {
-        <ul className="flex gap-3 overflow-x-auto pb-2">
+        <ul className="no-scrollbar -mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2">
           {items.map((d) => {
             const meta = CHAPTER_LIST.find((c) => c.id === d.chapter);
             const full = !!meta && isFullSurah(d, meta.totalVerses);

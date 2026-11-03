@@ -56,7 +56,7 @@ function TasbihPage() {
       <div
         role="radiogroup"
         aria-label={t("tasbihTitle")}
-        className="-mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1"
+        className="-mx-4 mb-5 flex gap-2 no-scrollbar overflow-x-auto px-4 pb-1"
       >
         {TASBIH_PHRASES.map((p) => {
           const on = p.id === phrase.id;

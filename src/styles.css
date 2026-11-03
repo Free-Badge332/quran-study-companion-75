@@ -453,3 +453,8 @@ html.native body { padding-inline: 0; }
     background-color: var(--color-primary);
   }
 }
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}

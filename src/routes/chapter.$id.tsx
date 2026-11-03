@@ -86,7 +86,7 @@ function ChapterPage() {
   if (mode === "reading") {
     return (
       <div className="fixed inset-0 z-[60] overflow-y-auto bg-background">
-        <Link to="/chapter/$id" params={{ id }} search={{ source }} aria-label={t("learning")}
+        <Link replace to="/chapter/$id" params={{ id }} search={{ source }} aria-label={t("learning")}
           className="fixed left-2 top-2 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-card/80 text-primary shadow-soft backdrop-blur">
           <ChevronLeft size={22} />
         </Link>
@@ -113,8 +113,8 @@ function ChapterPage() {
 
       <div className="mb-6 grid min-w-0 grid-cols-2 items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-soft sm:flex sm:flex-wrap sm:justify-center">
         <div className="col-span-2 flex min-w-0 justify-self-center rounded-full bg-muted p-1">
-          <Link to="/chapter/$id" params={{ id }} search={{ source }} className={tab(true)}>{t("learning")}</Link>
-          <Link to="/chapter/$id" params={{ id }} search={{ mode: "reading", source }} className={tab(false)}>{t("reading")}</Link>
+          <Link replace to="/chapter/$id" params={{ id }} search={{ source }} className={tab(true)}>{t("learning")}</Link>
+          <Link replace to="/chapter/$id" params={{ id }} search={{ mode: "reading", source }} className={tab(false)}>{t("reading")}</Link>
         </div>
         <div className="col-span-2 flex min-w-0 items-center gap-2">
           <div className="min-w-0 flex-1">
@@ -144,7 +144,7 @@ function ChapterPage() {
           <ListMusic size={14} /> Continue to next surah
         </Button>
         <SleepTimerControl chapter={num} />
-        <select aria-label="Audio source" value={source ?? 'auto'} onChange={e => void navigate({ to: '/chapter/$id', params: { id }, search: { mode, source: e.target.value === 'downloaded' ? 'downloaded' : undefined } })} className="col-span-2 min-h-11 min-w-0 rounded-md border border-input bg-background px-2 py-1.5 text-sm">
+        <select aria-label="Audio source" value={source ?? 'auto'} onChange={e => void navigate({ replace: true, to: '/chapter/$id', params: { id }, search: { mode, source: e.target.value === 'downloaded' ? 'downloaded' : undefined } })} className="col-span-2 min-h-11 min-w-0 rounded-md border border-input bg-background px-2 py-1.5 text-sm">
           <option value="auto">Saved audio or online</option><option value="downloaded">Downloaded only</option>
         </select>
         <label className="col-span-2 grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-2 text-sm text-muted-foreground sm:flex">
@@ -170,10 +170,10 @@ function ChapterPage() {
 
       <nav className="mt-10 flex justify-between">
         {num > 1 ? (
-          <Link to="/chapter/$id" params={{ id: String(num - 1) }} search={{ mode, source }} className="flex min-h-11 items-center gap-1 py-2 text-primary"><ChevronLeft size={18} /> {t("previous")}</Link>
+          <Link replace to="/chapter/$id" params={{ id: String(num - 1) }} search={{ mode, source }} className="flex min-h-11 items-center gap-1 py-2 text-primary"><ChevronLeft size={18} /> {t("previous")}</Link>
         ) : <span />}
         {num < 114 && (
-          <Link to="/chapter/$id" params={{ id: String(num + 1) }} search={{ mode, source }} className="flex min-h-11 items-center gap-1 py-2 text-primary">{t("next")} <ChevronRight size={18} /></Link>
+          <Link replace to="/chapter/$id" params={{ id: String(num + 1) }} search={{ mode, source }} className="flex min-h-11 items-center gap-1 py-2 text-primary">{t("next")} <ChevronRight size={18} /></Link>
         )}
       </nav>
     </main>
@@ -280,8 +280,8 @@ function Learning({ chapter, size, leading, translationSize, reader, q, speed, r
     const vid = currentVerse.current ?? chapter.verses[0]?.id ?? 1;
     const target = chapter.verses.find(v => v.id === vid + dir);
     if (target) { void play(target.id, 1, true); return; }
-    if (dir === 1 && chapter.id < 114) void navigate({ to: "/chapter/$id", params: { id: String(chapter.id + 1) }, search: { play: 1, source } });
-    if (dir === -1 && chapter.id > 1) void navigate({ to: "/chapter/$id", params: { id: String(chapter.id - 1) }, search: { source } });
+    if (dir === 1 && chapter.id < 114) void navigate({ replace: true, to: "/chapter/$id", params: { id: String(chapter.id + 1) }, search: { play: 1, source } });
+    if (dir === -1 && chapter.id > 1) void navigate({ replace: true, to: "/chapter/$id", params: { id: String(chapter.id - 1) }, search: { source } });
   };
   const actions = useRef({ play: resumeInPlace, pause: pauseNow, next: () => step(1), previous: () => step(-1) });
   actions.current = { play: resumeInPlace, pause: pauseNow, next: () => step(1), previous: () => step(-1) };
@@ -325,7 +325,7 @@ function Learning({ chapter, size, leading, translationSize, reader, q, speed, r
     if (sleepTimer.surahEnded(chapter.id)) return; // expiry listener stops playback
     if (opts.current.repeatMode === "surah" && chapter.verses[0]) { void play(chapter.verses[0].id, 1, true); return; }
     if (opts.current.continuous && chapter.id < 114) {
-      void navigate({ to: "/chapter/$id", params: { id: String(chapter.id + 1) }, search: { play: 1, source } });
+      void navigate({ replace: true, to: "/chapter/$id", params: { id: String(chapter.id + 1) }, search: { play: 1, source } });
       return;
     }
     setPlaying(null); release.current(); setMediaPlaybackState('none'); nativeMediaStop();
