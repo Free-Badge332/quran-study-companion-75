@@ -1,5 +1,5 @@
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
-import { ArrowLeft, Settings } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { LANGUAGES, type Lang } from "@/lib/quran";
 import { useLang } from "@/lib/lang";
 import { MoreDrawer } from "@/components/more-drawer";
@@ -13,32 +13,33 @@ export function SiteHeader() {
   const goBack = () => { if (window.history.length > 1) router.history.back(); else void router.navigate({ to: "/" }); };
   return (
     <header className="app-header sticky z-30 border-b border-border bg-background/95 backdrop-blur">
-      <div className="app-header-inner mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-1 py-2 sm:flex sm:justify-between sm:gap-3">
+      <div className="app-header-inner mx-auto flex max-w-6xl items-center justify-between gap-2 py-2.5 sm:gap-4">
         <div className="flex min-w-0 items-center gap-1">
         {!isRoot && (
-          <button type="button" onClick={goBack} aria-label="Back" className="-ml-2 grid h-11 w-11 shrink-0 place-items-center rounded-full text-foreground hover:bg-secondary">
+          <button type="button" onClick={goBack} aria-label="Back" className="-ml-2 grid h-11 w-11 shrink-0 place-items-center rounded-full text-foreground transition-colors hover:bg-secondary">
             <ArrowLeft size={22} />
           </button>
         )}
-        <MoreDrawer />
-        <Link to="/" className="flex min-h-11 min-w-0 items-center gap-2">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary"><img src="/logo.png" alt="" className="h-6 w-6" /></span>
-          <span className="truncate font-display text-xl text-primary">{t("appName")}</span>
+        <Link to="/" className="group flex min-h-11 min-w-0 items-center gap-2.5">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary shadow-sm ring-1 ring-[var(--gold)]/40 transition-transform group-hover:scale-105"><img src="/logo.png" alt="" className="h-6 w-6" /></span>
+          <span className="flex min-w-0 flex-col leading-none">
+            <span className="truncate font-display text-[1.35rem] font-semibold tracking-tight text-primary">{t("appName")}</span>
+            <span className="mt-1 hidden text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">Quran · Azkar · Prayer</span>
+          </span>
         </Link>
         </div>
-        <nav className="ml-auto flex min-w-0 items-center gap-5 text-sm">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+        <nav className="hidden items-center gap-1 text-sm md:flex">
           {/* Phones use the bottom tab bar; text links only appear on wider screens. */}
-          <Link to="/quran" className="hidden truncate text-muted-foreground transition-colors hover:text-foreground md:inline" activeProps={{ className: "text-primary font-semibold" }}>{t("navQuran")}</Link>
-          <Link to="/azkar" className="hidden truncate text-muted-foreground transition-colors hover:text-foreground md:inline" activeProps={{ className: "text-primary font-semibold" }}>{t("navAzkar")}</Link>
-          <Link to="/ramadan" className="hidden truncate text-muted-foreground transition-colors hover:text-foreground md:inline" activeProps={{ className: "text-primary font-semibold" }}>{t("navPrayer")}</Link>
-          <Link to="/hadith" className="hidden truncate text-muted-foreground transition-colors hover:text-foreground md:inline" activeProps={{ className: "text-primary font-semibold" }}>{t("navHadith")}</Link>
-          <Link to="/settings" aria-label={t("navSettings")} title={t("navSettings")} className="grid h-11 w-11 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary" activeProps={{ className: "text-primary" }}><Settings size={19} /></Link>
+          {([["/quran", "navQuran"], ["/azkar", "navAzkar"], ["/ramadan", "navPrayer"], ["/hadith", "navHadith"]] as const).map(([to, key]) => (
+            <Link key={to} to={to} className="rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "bg-secondary text-primary font-semibold" }}>{t(key)}</Link>
+          ))}
         </nav>
         <select
           aria-label={t("language")}
           value={lang}
           onChange={(e) => setLang(e.target.value as Lang)}
-          className="hidden min-h-10 min-w-0 max-w-32 rounded-lg border border-input bg-card px-2 py-1.5 text-sm text-foreground sm:block"
+          className="hidden min-h-10 min-w-0 max-w-32 rounded-full border border-input bg-card px-3 py-1.5 text-sm text-foreground sm:block"
         >
           {LANGUAGES.map((l) => (
             <option key={l.id} value={l.id}>
@@ -46,6 +47,8 @@ export function SiteHeader() {
             </option>
           ))}
         </select>
+        <MoreDrawer />
+        </div>
       </div>
     </header>
   );
