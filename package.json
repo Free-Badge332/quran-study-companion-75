@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:mobile": "vite build --config vite.mobile.config.ts",
+    "cap:sync": "vite build --config vite.mobile.config.ts && cap sync"
   },
   "overrides": {
     "rolldown": "1.2.1"
