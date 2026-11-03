@@ -57,7 +57,7 @@ export function ReciterPicker({ value, onChange }: { value: string; onChange: (i
               className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none" />
           </label>
         </div>
-        <div role="tablist" aria-label="Reciter groups" className="-mx-1 flex shrink-0 gap-2 overflow-x-auto px-4 py-2">
+        <div role="tablist" aria-label="Reciter groups" className="-mx-1 flex shrink-0 gap-2 no-scrollbar overflow-x-auto px-4 py-2">
           {TABS.map(([id, label]) => (
             <Button key={id} role="tab" aria-selected={tab === id} size="sm" variant={tab === id ? "default" : "outline"} className="shrink-0" onClick={() => setTab(id)}>{label}</Button>
           ))}
