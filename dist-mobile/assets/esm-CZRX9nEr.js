@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/web-RYtVmZCZ.js","assets/index-DGrjBtmk.js","assets/styles-B9l8SK9-.css"])))=>i.map(i=>d[i]);
+import{i as e,r as t}from"./index-DGrjBtmk.js";var n=t(`CapacitorSQLite`,{web:()=>e(()=>import(`./web-RYtVmZCZ.js`).then(e=>new e.CapacitorSQLiteWeb),__vite__mapDeps([0,1,2])),electron:()=>window.CapacitorCustomPlatform.plugins.CapacitorSQLite});export{n as CapacitorSQLite};
