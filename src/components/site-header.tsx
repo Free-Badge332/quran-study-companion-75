@@ -21,7 +21,7 @@ export function SiteHeader() {
           </button>
         )}
         <Link to="/" className="group flex min-h-11 min-w-0 items-center gap-2.5">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary shadow-sm ring-1 ring-[var(--gold)]/40 transition-transform group-hover:scale-105"><img src="/logo.png" alt="" className="h-6 w-6" /></span>
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary shadow-sm ring-1 ring-gold/40 transition-transform group-hover:scale-105"><img src="/logo.png" alt="" className="h-6 w-6" /></span>
           <span className="flex min-w-0 flex-col leading-none">
             <span className="truncate font-display text-[1.35rem] font-semibold tracking-tight text-primary">{t("appName")}</span>
             <span className="mt-1 hidden text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">Quran · Azkar · Prayer</span>
